@@ -18,6 +18,8 @@ lazy val `scalajs-laminar-spreadsheet` = project
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "com.raquo" %%% "laminar" % "0.13.1",
-      "com.lihaoyi" %%% "fastparse" % "2.3.3"
+      "com.lihaoyi" %%% "fastparse" % "2.3.3",
+      "io.github.cquiroz" %%% "scala-java-time" % "2.2.2",
+      "io.github.cquiroz" %%% "scala-java-time-tzdb" % "2.2.2"
     )
   )

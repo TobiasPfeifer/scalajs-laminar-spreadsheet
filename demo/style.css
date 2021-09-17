@@ -1,0 +1,15 @@
+input.cell {
+    border-width: thin;
+    box-sizing: border-box;
+    border: 1px solid rgb(200, 200, 200);
+    outline: none;
+    transition: 0.1s;
+}
+
+input.cell:focus {
+    border: 1px solid rgb(0, 0, 128);
+}
+
+input.cell:hover {
+    border: 1px solid rgb(0, 128, 128);
+}

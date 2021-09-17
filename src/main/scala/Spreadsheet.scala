@@ -11,7 +11,7 @@ object Spreadsheet {
   lazy val grid: CellGrid = buildDemoGrid()
 
   def buildDemoGrid() = {
-    lazy val cells: CellGrid = (0 to 20).toList.map(row => (0 to 5).toList.map(col => Cell(() => cells, Var(""), row -> col)))
+    lazy val cells: CellGrid = (0 to 25).toList.map(row => (0 to 5).toList.map(col => Cell(() => cells, Var(""), row -> col)))
     cells(0)(0).expression.set("Item name")
     cells(1)(0).expression.set("Apple")
     cells(2)(0).expression.set("Egg")
@@ -34,13 +34,16 @@ object Spreadsheet {
     cells(8)(1).expression.set("=CONCAT([8:0],\" scala!\")")
     cells(8)(2).expression.set("=CONCAT([8:0],\" laminar!\")")
     cells(8)(3).expression.set("=CONCAT([8:0],\" world!\")")
+    cells(9)(0).expression.set("Last page reload:")
+    cells(9)(1).expression.set("=NOW()")
     cells
   }
   val editVar: Var[(Option[(Int, Int)], Var[String])] = Var((None, Var("")))
 
   val $view: Div =
     div(
-      h1("Hello world"),
+      h1("Basic spreadsheet in < 200 LoC"),
+      div(span("supported functions: CONCAT, SUBTRACT, SUM, NEGATE, MULT, DIV, NOW")),
       child <-- editVar.signal.map(_._1).map(_.fold("Input: []")(t => s"Input [${t._1}:${t._2}] ")).map(span(_)),
       input(
         label("Input"),
@@ -55,7 +58,6 @@ object Spreadsheet {
       ),
       hr(marginTop("1em"), marginBottom("1em")),
       div(
-        overflow("scroll"),
         grid.map(renderRow(_))
       )
     )
@@ -72,13 +74,7 @@ object Spreadsheet {
       display("flex"),
       flexDirection("column"),
       input(
-        borderWidth("thin"),
-        padding("0.1em"),
-        boxSizing("border-box"),
-        border("1px solid #ccc"),
-        transition("0.2s"),
-        outline("none"),
-        fontSize("large"),
+        cls("cell"),
         readOnly(true),
         value <-- cell.value.map(_.fold(_.msg, _.toString())),
         onFocus --> editVar.writer.contramap((_: Any) => Some(cell.coords) -> cell.expression)
